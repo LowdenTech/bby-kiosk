@@ -48,6 +48,7 @@ if exist %skulist% (
     )
     set timestamp="[%mydate%%time%]"
     echo %timestamp:"=% Build failed. Could not cache product information. Unable to load skufile >> %logFile%
+    pause
     exit
 )
 
@@ -62,6 +63,7 @@ if exist %skulist% (
     )
     set timestamp="[%mydate%%time%]"
     echo %timestamp:"=% Build failed. Could not make JS dependencies. Unable to load skufile >> %logFile%
+    pause
     exit
 )
 

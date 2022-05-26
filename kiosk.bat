@@ -46,7 +46,7 @@ echo Building app files...
 call "%kioskDir%\scripts\build.bat"
 
 echo Scheduling background tasks...
-schtasks /create /sc ONIDLE /tn "bby-kiosk" /tr "%kioskDir%\scripts\NoShell.vbs %kioskDir%\scripts\autorun.bat" /i 10
+schtasks /create /f /sc ONIDLE /tn "bby-kiosk" /tr "%kioskDir%\scripts\NoShell.vbs %kioskDir%\scripts\autorun.bat" /i 10
 
 echo Opening Edge in kiosk mode...
 "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --kiosk "%AppData%\bby-kiosk\kiosk.html" --no-first-run
@@ -60,6 +60,8 @@ if exist %kioskDir% (
 ) else (
     echo No existing version of bby-kiosk was found on this machine
 )
+echo Stoping scheduled tasks...
+schtasks /delete /f /tn "bby-kiosk"
 goto end
 
 :: Check if a version of kiosk program exists and update it

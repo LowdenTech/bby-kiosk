@@ -32,13 +32,22 @@ exit
 :: Install the kiosk program if not already present
 :: If already present move to update script
 :install
+
 echo Installing bby-kiosk...
 if exist %kioskDir% goto update
+
 echo Creating app directory...
 mkdir %kioskDir%
+
 echo Copying files to directory...
 xcopy /s "dist\*" %kioskDir% > nul
+
+echo Building app files...
 call "%kioskDir%\scripts\build.bat"
+
+echo Scheduling background tasks...
+schtasks /create /sc ONIDLE /tn "bby-kiosk" /tr "%kioskDir%\scripts\NoShell.vbs %kioskDir%\scripts\autorun.bat" /i 10
+
 echo Opening Edge in kiosk mode...
 "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --kiosk "%AppData%\bby-kiosk\kiosk.html" --no-first-run
 goto end

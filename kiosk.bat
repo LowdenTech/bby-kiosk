@@ -15,22 +15,17 @@ echo Please select an option:
 echo.
 echo 1. Install
 echo 2. Remove
-echo 3. Check for Update
-echo 4. Update Products
-echo 5. Exit
+echo 3. Exit
 echo.
 set /p a="Enter a selection: "
 echo.
 if %a% == 1 goto install
 if %a% == 2 goto remove
-if %a% == 3 goto update
-if %a% == 4 goto skulist
 echo Aborting...
 pause
 exit
 
 :: Install the kiosk program if not already present
-:: If already present move to update script
 :install
 
 echo Installing bby-kiosk...
@@ -39,8 +34,8 @@ if exist %kioskDir% goto update
 echo Creating app directory...
 mkdir %kioskDir%
 
-echo Copying files to directory...
-xcopy /s "dist\*" %kioskDir% > nul
+echo Cloning GitHub repository...
+git clone -b master https://github.com/LowdenTech/bby-kiosk.git %kioskDir%
 
 echo Building app files...
 call "%kioskDir%\scripts\build.bat"
@@ -50,12 +45,13 @@ schtasks /create /f /sc ONIDLE /tn "bby-kiosk" /tr "%kioskDir%\scripts\NoShell.v
 
 echo Opening Edge in kiosk mode...
 "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --kiosk "%AppData%\bby-kiosk\kiosk.html" --no-first-run
-goto end
+exit
 
 :: Remove the kiosk program from the computer completely
 :remove
 echo Removing bby-kiosk...
 if exist %kioskDir% (
+    echo Deleting app directory and all included files...
     rmdir /s /q %kioskDir%
 ) else (
     echo No existing version of bby-kiosk was found on this machine
@@ -64,21 +60,6 @@ echo Stoping scheduled tasks...
 schtasks /delete /f /tn "bby-kiosk"
 goto end
 
-:: Check if a version of kiosk program exists and update it
-:: If not, move to install script
-:update
-if not exist %kioskDir% (
-    echo No existing version of bby-kiosk was found on this machine
-    goto install
-)
-echo Checking for updates...
-goto end
-
-:: Update the list of skus to display on the program
-:skulist
-call "%AppData%/dist/scripts/skulist.bat"
-goto end
-
 :end
-echo Operation completed successfully
+echo Operation completed successfully.
 pause

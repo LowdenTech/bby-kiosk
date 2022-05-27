@@ -3,10 +3,13 @@ Copyright Michael Lowden (LowdenTech) May 2022
 Program: bby-kiosk
 Author: Michael Lowden
 Description:
-Version: 0.1
 
 Change Log:
+
+v0.1:
     + First Iteration of the kiosk Program
     + Added script for easy deployment to any machine
-    + Added PHP support
-    + 
+
+v0.2:
+    + Added Git support for CI/CD
+    + Two branches exist for development and testing purposes

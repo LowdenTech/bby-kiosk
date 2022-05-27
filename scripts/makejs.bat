@@ -12,6 +12,7 @@ set dependenciesDir="%kioskDir:"=%\dependencies"
 set kioskFile="%kioskDir:"=%\dependencies\kiosk.js"
 
 cat "%dependenciesDir:"=%\base" > %kioskFile%
+echo. >> %kioskFile%
 printf "let products = [" >> %kioskFile%
 
 for /F "tokens=*" %%A in (%skulist:"=%) do (

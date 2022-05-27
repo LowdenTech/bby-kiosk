@@ -49,6 +49,10 @@ exit
 
 :: Remove the kiosk program from the computer completely
 :remove
+
+echo Stoping scheduled tasks...
+schtasks /delete /f /tn "bby-kiosk"
+
 echo Removing bby-kiosk...
 if exist %kioskDir% (
     echo Deleting app directory and all included files...
@@ -56,10 +60,3 @@ if exist %kioskDir% (
 ) else (
     echo No existing version of bby-kiosk was found on this machine
 )
-echo Stoping scheduled tasks...
-schtasks /delete /f /tn "bby-kiosk"
-goto end
-
-:end
-echo Operation completed successfully.
-pause

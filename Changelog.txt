@@ -6,6 +6,10 @@ Description:
 
 Change Log:
 
-Version: 0.1:
+v0.1:
     + First Iteration of the kiosk Program
     + Added script for easy deployment to any machine
+
+v0.2:
+    + Added Git support for CI/CD
+    + Two branches exist for development and testing purposes

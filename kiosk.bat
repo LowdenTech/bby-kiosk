@@ -44,7 +44,7 @@ echo Scheduling background tasks...
 schtasks /create /f /sc ONIDLE /tn "bby-kiosk" /tr "%kioskDir%\scripts\NoShell.vbs %kioskDir%\scripts\autorun.bat" /i 10
 
 echo Opening Edge in kiosk mode...
-"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --kiosk "%AppData%\bby-kiosk\kiosk.html" --no-first-run
+"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" "%AppData%\bby-kiosk\kiosk.html" --no-first-run
 exit
 
 :: Remove the kiosk program from the computer completely

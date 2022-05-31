@@ -3,6 +3,7 @@
 
 @echo off
 
+set PATH=%PATH%;"%kioskDir:"=%\bin"
 set kioskDir="%AppData%\bby-kiosk"
 
 :: Present main menu to user

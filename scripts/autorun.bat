@@ -32,4 +32,4 @@ call "%kioskDir%\scripts\build.bat"
 taskkill/im msedge.exe
 
 :: Open Edge in kiosk mode pointing to kiosk.hmtl file
-"C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --kiosk "%AppData%\bby-kiosk\kiosk.html" --edge-kiosk-type=fullscreen --no-first-run
+start msedge --app="%AppData%\bby-kiosk\kiosk.html" --start-fullscreen

@@ -11,18 +11,98 @@ $(document).ready(function() {
     var salePrice = ""
     if (mainProduct.salePrice != mainProduct.regularPrice) {
         price = "<del>" + mainProduct.regularPrice + "</del>"
-        salePrice = mainProduct.salePrice
+        salePrice = "$" + mainProduct.salePrice
     }
     $("#main-price").html("$" + price)
-    $("#main-sale-price").html("$" + salePrice)
-    $("#main-description").html("<ul><li>" + mainProduct.processorType + "</li></ul>")
+    $("#main-sale-price").html(salePrice)
 
-    for (let i = 1; i < products.count; i++) {
+    var operatingSystem = ""
+    var processor = ""
+    var ram = ""
+    var ssd = ""
+    var hdd = ""
+    var graphics = ""
+    var vrSupport = ""
+    var networking = ""
+    var btSupport = ""
+    var usbPorts = ""
+    var expansionSlots = ""
 
+    let description = "<ul>"
+    let specs = mainProduct.specs
+    for (var spec of specs) {
+        switch (spec.name) {
+            case "Pre-loaded Operating System":
+                description = description + "<li><b>Operating System:</b> " + spec.value + "</li>"
+                break
+            case "Processor Type":
+                description = description + "<li><b>Processor:</b> " + spec.value + "</li>"
+                break
+            case "RAM Type":
+                description = description + "<li><b>RAM:</b> " + spec.value + "</li>"
+                break
+            case "Solid-State Drive Capacity":
+                description = description + "<li><b>SSD:</b> " + spec.value + "</li>"
+                break
+            case "Hard Disk Drive Capacity":
+                description = description + "<li><b>HDD:</b> " + spec.value + "</li>"
+                break
+            case "Graphics Card":
+                description = description + "<li><b>Graphics:</b> " + spec.value + "</li>"
+                break
+            case "VR Ready":
+                description = description + "<li><b>VR Ready:</b> " + spec.value + "</li>"
+                break
+            case "Integrated Wi-Fi":
+                description = description + "<li><b>WiFi:</b> " + spec.value + "</li>"
+                break
+            case "Integrated Bluetooth":
+                description = description + "<li><b>Bluetooth:</b> " + spec.value + "</li>"
+                break
+            case "USB Ports":
+                description = description + "<li><b>USB Ports:</b> " + spec.value + "</li>"
+                break
+            case "Expansion Slots":
+                description = description + "<li><b>Expansion Slots:</b> " + spec.value + "</li>"
+                break
+            default:
+                break
+        }
     }
+    description = description + "</ul>"
+    $("#main-description").html(description)
+
+    var altProductCards = ""
+    for (var i = 1; i < products.length; i++) {
+        var altProduct = JSON.parse(products[i])
+        var price = altProduct.regularPrice
+        var salePrice = ""
+        if (altProduct.salePrice != altProduct.regularPrice) {
+            price = "<del>" + altProduct.regularPrice + "</del>"
+            salePrice = "$" + altProduct.salePrice
+        }
+        altProductCards = altProductCards +
+        "<div class='col mb-5'>" + 
+            "<div class='card h-100'>" +
+                "<img id='alt-img' class='card-img-top' src='" + altProduct.additionalMedia[0].url + "' alt='...'></img>" +
+                "<div class='card-body p-4'>" +
+                    "<div class='text-center'>" +
+                        "<h5 class='fw-bolder'>" + altProduct.name + "</h5>" +
+                        "<span>$" + price + "</span>" +
+                        "<div class='text-danger'>" + salePrice + "</div>" +
+                    "</div>" +
+                "</div>" +
+                "<div class='card-footer p-4 pt-0 border-top-0 bg-transparent'>" +
+                    "<div class='text-center'><a class='btn btn-outline-dark mt-auto' href='#'>More Info</a></div>" + 
+                "</div>" +
+            "</div>" +
+        "</div>"
+    }
+    $("#alt-products").html(altProductCards)
 
     for (var p in products) {
         let data = JSON.parse(products[p])
         console.log(data)
     }
+
 })

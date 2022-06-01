@@ -1,6 +1,8 @@
 :: Copyright Michael Lowden (LowdenTech) May 2022
 :: Created on May 20, 2022
 
+@echo off
+
 set kioskDir="%AppData%\bby-kiosk"
 set configDir="%kioskDir:"=%\config"
 set configFile="%configDir:"=%\config.txt"

@@ -23,11 +23,11 @@ goto :eof
 :: Check for updates and rebuild the project
 git pull
 
-:: Close any instances of edge
-taskkill/im msedge.exe
-
 :: Rebuild app using existing config
 call "%kioskDir%\scripts\build.bat"
+
+:: Close any instances of edge
+taskkill/im msedge.exe
 
 :: Open Edge in kiosk mode pointing to kiosk.hmtl file
 "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe" --kiosk "%AppData%\bby-kiosk\kiosk.html" --edge-kiosk-type=fullscreen --no-first-run

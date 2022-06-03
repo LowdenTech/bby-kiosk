@@ -26,8 +26,8 @@ set timestamp="[%mydate%%time%]"
 echo %timestamp:"=% Processing cURL requests to bestbuy.ca >> %logFile%
 
 :: Pull product information for each sku in skulist.txt
-for /F "tokens=*" %%A in (%skulist:"=%) do (
+for /F "usebackq tokens=*" %%A in (%skulist%) do (
     echo Pulling product information for %%A from BestBuy.ca...
     curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36" -o "%cacheDir:"=%\%%A.dat" "https://www.bestbuy.ca/api/v2/json/product/%%A" 2>> %logFile%
-    powershell -Command "(gc %cacheDir:"=%\%%A.dat) -replace '''', '\''' | Out-File -encoding ASCII -NoNewline %cacheDir:"=%\%%A.dat"
+    powershell -Command "(gc '%cacheDir:"=%\%%A.dat') -replace '''', '\''' | Out-File -encoding ASCII -NoNewline '%cacheDir:"=%\%%A.dat'"
 )

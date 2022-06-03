@@ -15,7 +15,7 @@ cat "%dependenciesDir:"=%\base" > %kioskFile%
 echo. >> %kioskFile%
 printf "let products = [" >> %kioskFile%
 
-for /F "tokens=*" %%A in (%skulist:"=%) do (
+for /F "usebackq tokens=*" %%A in (%skulist%) do (
     printf   "'"
     cat      "%cacheDir:"=%\%%A.dat"
     printf   "',"

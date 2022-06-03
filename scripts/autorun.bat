@@ -4,6 +4,7 @@
 @echo off
 
 set kioskDir="%AppData%\bby-kiosk"
+set PATH=%PATH%;"%kioskDir%\dependencies\git\bin"
 set configDir="%kioskDir:"=%\config"
 set configFile="%configDir:"=%\config.txt"
 
@@ -32,4 +33,4 @@ call "%kioskDir%\scripts\build.bat"
 taskkill/im msedge.exe
 
 :: Open Edge in kiosk mode pointing to kiosk.hmtl file
-start msedge --app="%AppData%\bby-kiosk\kiosk.html" --start-fullscreen
+start msedge "%AppData%\bby-kiosk\kiosk.html" --start-maximized

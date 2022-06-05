@@ -8,6 +8,11 @@ set PATH=%PATH%;"%kioskDir%\dependencies\git\bin"
 set configDir="%kioskDir:"=%\config"
 set configFile="%configDir:"=%\config.txt"
 
+:: Clean git project folder
+git reset
+git checkout .
+git clean -fdx
+
 :: Get config settings
 for /F "tokens=1,2 delims==" %%A in (%configFile:"=%) do (
     if not "%%B"=="" (

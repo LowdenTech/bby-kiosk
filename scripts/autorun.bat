@@ -34,6 +34,8 @@ taskkill/im msedge.exe
 :: Open Edge in kiosk mode pointing to kiosk.hmtl file
 start msedge "%AppData%\bby-kiosk\kiosk.html" --start-maximized
 
+goto :eof
+
 :: Function declarations
 
 :: Switch what branch of the GitHub repo this project follows

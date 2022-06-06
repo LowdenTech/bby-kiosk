@@ -6,16 +6,17 @@ echo.
 
 set skulist=%1
 
-set /p main="Enter sku for main product: "
-set /p alt1="Enter sku for 1st alternative product: "
-set /p alt2="Enter sku for 2nd alternative product: "
-set /p alt3="Enter sku for 3rd alternative product: "
-set /p alt4="Enter sku for 4th alternative product: "
+if exist %skulist% goto :eof
 
-(
-    echo %main%
-    echo %alt1%
-    echo %alt2%
-    echo %alt3%
-    echo %alt4%
-) > %skulist%
+echo Generating custom skulist...
+
+echo Instructions: > %skulist%
+echo. >> %skulist%
+echo 1. Erase all text in this file and replace with your list of SKUs >> %skulist%
+echo 2. SKUs should be place one per line in the file >> %skulist%
+echo 3. Verify you have entered each SKU correctly >> %skulist%
+echo 4. When finished, save the file and exit out of this window >> %skulist%
+
+call "%skulist%"
+
+echo Done.

@@ -21,12 +21,28 @@ if "%~1"=="" (
 )
 
 cat "%dependenciesDir:"=%\base" > %kioskFile%
+
+:: Injecting product json data into JS file
+echo. >> %kioskFile%
 echo. >> %kioskFile%
 printf "let products = [" >> %kioskFile%
 
 for /F "usebackq tokens=*" %%A in (%skulist%) do (
     printf   "'"
     cat      "%cacheDir:"=%\%%A.dat"
+    printf   "',"
+) >> %kioskFile%
+
+printf "]" >> %kioskFile%
+
+:: Injecting availability json data into JS file
+echo. >> %kioskFile%
+echo. >> %kioskFile%
+printf "let availabilities = [" >> %kioskFile%
+
+for /F "usebackq tokens=*" %%A in (%skulist%) do (
+    printf   "'"
+    cat      "%cacheDir:"=%\%%A.avail"
     printf   "',"
 ) >> %kioskFile%
 

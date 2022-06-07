@@ -4,12 +4,21 @@
 @echo off
 echo.
 
-set kioskDir="%AppData%\bby-kiosk"
 set PATH=%PATH%;"%kioskDir:"=%\bin"
-set skulist="%kioskDir:"=%\config\skulist.txt"
-set cacheDir=%1
+
+set kioskDir="%AppData%\bby-kiosk"
+set cacheDir="%kioskDir:"=%\cached"
 set dependenciesDir="%kioskDir:"=%\dependencies"
+
 set kioskFile="%kioskDir:"=%\dependencies\kiosk.js"
+set skulist=%1
+
+:: Check for invalid parameter entries
+if "%~1"=="" (
+    echo Invalid entry for skulist parameter in makejs.bat
+) else if not "%~2"=="" (
+    echo Invalid number of parameters passed to makejs.bat
+)
 
 cat "%dependenciesDir:"=%\base" > %kioskFile%
 echo. >> %kioskFile%

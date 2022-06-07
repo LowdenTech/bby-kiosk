@@ -4,7 +4,9 @@
 @echo off
 echo.
 
-set skulist=%1
+set kioskDir="%AppData%\bby-kiosk"
+set skulistsDir="%kioskDir:"=%\skulists"
+set skulist="%skulistsDir:"=%\Custom.txt"
 
 if exist %skulist% goto :eof
 

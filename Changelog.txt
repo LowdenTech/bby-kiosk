@@ -8,8 +8,11 @@ Change Log:
 
 v0.1:
     + First Iteration of the kiosk Program
-    + Added script for easy deployment to any machine
 
 v0.2:
-    + Added Git support for CI/CD
-    + Two branches exist for development and testing purposes
+    + Added a step to autorun.bat that will remove any changes to the program files before 
+      pulling updates from repo
+    + Added preconfigured skulists for each brand
+    + Reworked the config file to store brand and store number
+    + Added a feature to display in store availability
+    - Removed the ability to change the location of skulist and cached files in config.txt

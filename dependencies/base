@@ -3,7 +3,12 @@
 
 $(document).ready(function() {
 
-    sortByCost()
+    let sku = getURLParam('sku')
+    if (sku != null) {
+        sortByCostWithPriority(sku)
+    } else {
+        sortByCost()
+    }
 
     let mainProduct = JSON.parse(products[0])
     $("#main-img").attr("src", mainProduct.additionalMedia[0].url)
@@ -103,7 +108,7 @@ $(document).ready(function() {
                     "</svg>" +
                 "</div>" +
                 "<div class='card-footer p-4 pt-0 border-top-0 bg-transparent'>" +
-                    "<div class='text-center'><a class='btn btn-outline-dark mt-auto' href='#'>More Info</a></div>" + 
+                    "<div class='text-center'><a id='alt" + i + "-btn' class='btn btn-outline-dark mt-auto' href='#'>Select</a></div>" + 
                 "</div>" +
             "</div>" +
         "</div>"
@@ -124,6 +129,7 @@ $(document).ready(function() {
         $("#alt" + i + "-name").html(altProduct.name)
         $("#alt" + i + "-price").html("$" + price)
         $("#alt" + i + "-sale-price").html(salePrice)
+        $("#alt" + i + "-btn").attr("href", "?sku=" + altProduct.sku)
 
         if (getAvailabilityFor(altProduct.sku) > 0) {
             $("#alt" + i + "-check-icon").removeAttr("hidden")
@@ -138,6 +144,25 @@ function sortByCost() {
     products.sort(function(a, b){
         let productA = JSON.parse(a)
         let productB = JSON.parse(b)
+        let priceA = productA.regularPrice != productA.salePrice ? productA.salePrice : productA.regularPrice
+        let priceB = productB.regularPrice != productB.salePrice ? productB.salePrice : productB.regularPrice
+        return priceA - priceB
+    })
+}
+
+function sortByCostWithPriority(sku) {
+    products.sort(function(a, b){
+        let productA = JSON.parse(a)
+        let productB = JSON.parse(b)
+        
+        if (productB.sku == sku) {
+            return 1
+        }
+
+        if (productA.sku == sku) {
+            return -1
+        }
+
         let priceA = productA.regularPrice != productA.salePrice ? productA.salePrice : productA.regularPrice
         let priceB = productB.regularPrice != productB.salePrice ? productB.salePrice : productB.regularPrice
         return priceA - priceB
@@ -159,4 +184,15 @@ function getAvailabilityFor(sku) {
         }
     }
     return 0
-} 
+}
+
+function getURLParam(sParam) {
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('?');
+    for (var i = 0; i < sURLVariables.length; i++) {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam) {
+            return sParameterName[1];
+        }
+    }
+}

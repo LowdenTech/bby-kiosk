@@ -84,6 +84,7 @@ $(document).ready(function() {
     } else {
         $("#main-x-icon").removeAttr("hidden")
     }
+    $("#main-btn").attr("href", "https://www.bestbuy.ca/en-ca/product/" + mainProduct.sku)
 
     var altProductCards = ""
     for (var i = 1; i < products.length; i++) {

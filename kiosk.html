@@ -17,7 +17,8 @@
     <section class="py-5">
         <div class="container px-4 px-lg-5 my-5">
             <div class="row gx-4 gx-lg-5 align-items-center">
-                <div class="col-md-6"><img id="main-img" class="card-img-top mb-5 mb-md-0" src="https://multimedia.bbycastatic.ca/multimedia/products/500x500/154/15446/15446050.jpg" alt="..."></div>
+
+                <div class="col-md-6"><img id="main-img" class="card-img-top mb-5 mb-md-0" src="" alt="..."></div>
                 <div class="col-md-6">
                     <div id="main-sku" class="small mb-1"></div>
                     <h1 id="main-name" class="display-5 fw-bolder"></h1>
@@ -26,10 +27,18 @@
                         <div id="main-sale-price" class="text-danger"></div>
                     </div>
                     <p id="main-description" class="lead"></p>
-                    <div class="d-flex">
-                        <div class="text-center"><a id="main-btn" class="btn btn-outline-dark mt-auto" href="#">More Info</a></div>
+                    <div id="main-in-store-label">
+                        In Store
+                        <svg id="main-check-icon" hidden xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-check-lg" viewBox="0 0 16 16">
+                            <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                        </svg>
+                        <svg id="main-x-icon" hidden xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-x" viewBox="0 0 16 16">
+                            <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                        </svg>
+                        <a id="main-btn" style="margin-left: 20px" class="btn btn-outline-dark mt-auto" href="#">More Info</a>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
@@ -41,18 +50,22 @@
             <div id="alt-products" class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                 <div class="col mb-5">
                     <div class="card h-100">
-                        <!-- Product image-->
-                        <img id="alt-img" class="card-img-top" src="https://dummyimage.com/450x300/dee2e6/6c757d.jpg" alt="...">
-                        <!-- Product details-->
+                        <img id="alt-img" class="card-img-top" src="" alt="...">
                         <div class="card-body p-4">
                             <div class="text-center">
-                                <!-- Product name-->
-                                <h5 class="fw-bolder">Fancy Product</h5>
-                                <!-- Product price-->
-                                $40.00 - $80.00
+                                <h5 class="fw-bolder">Name</h5>
+                                $0.00
                             </div>
                         </div>
-                        <!-- Product actions-->
+                        <div class="text-center">
+                            In Store
+                            <svg id="check-icon" hidden xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="green" class="bi bi-check-lg" viewBox="0 0 16 16">
+                                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                            </svg>
+                            <svg id="x-icon" hidden xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="red" class="bi bi-x" viewBox="0 0 16 16">
+                                <path d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+                            </svg>
+                        </div>
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#">More Info</a></div>
                         </div>

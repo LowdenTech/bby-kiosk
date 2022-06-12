@@ -3,6 +3,13 @@
 
 $(document).ready(function() {
 
+    let sku = getURLParam('sku')
+    if (sku != null) {
+        sortByCostWithPriority(sku)
+    } else {
+        sortByCost()
+    }
+
     let mainProduct = JSON.parse(products[0])
     $("#main-img").attr("src", mainProduct.additionalMedia[0].url)
     $("#main-name").html(mainProduct.name)
@@ -72,39 +79,121 @@ $(document).ready(function() {
     description = description + "</ul>"
     $("#main-description").html(description)
 
+    if (getAvailabilityFor(mainProduct.sku) > 0) {
+        $("#main-check-icon").removeAttr("hidden")
+    } else {
+        $("#main-x-icon").removeAttr("hidden")
+    }
     $("#main-btn").attr("href", "https://www.bestbuy.ca/en-ca/product/" + mainProduct.sku)
 
     var altProductCards = ""
     for (var i = 1; i < products.length; i++) {
-        var altProduct = JSON.parse(products[i])
-        var price = altProduct.regularPrice
-        var salePrice = ""
-        if (altProduct.salePrice != altProduct.regularPrice) {
-            price = "<del>" + altProduct.regularPrice + "</del>"
-            salePrice = "$" + altProduct.salePrice
-        }
         altProductCards = altProductCards +
         "<div class='col mb-5'>" + 
             "<div class='card h-100'>" +
-                "<img id='alt-img' class='card-img-top' src='" + altProduct.additionalMedia[0].url + "' alt='...'></img>" +
+                "<img id='alt" + i +"-img' class='card-img-top' src='' alt='...'></img>" +
                 "<div class='card-body p-4'>" +
                     "<div class='text-center'>" +
-                        "<h5 class='fw-bolder'>" + altProduct.name + "</h5>" +
-                        "<span>$" + price + "</span>" +
-                        "<div class='text-danger'>" + salePrice + "</div>" +
+                        "<h5 id='alt" + i + "-name' class='fw-bolder'></h5>" +
+                        "<span id='alt" + i + "-price'></span>" +
+                        "<div id='alt" + i + "-sale-price' class='text-danger'></div>" +
                     "</div>" +
                 "</div>" +
+                "<div id='in-store-label' class='text-center'>" +
+                    "In Store " +
+                    "<svg id='alt" + i + "-check-icon' hidden xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='green' class='bi bi-check-lg' viewBox='0 0 16 16'>" +
+                        "<path d='M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z'/>" +
+                    "</svg>" +
+                    "<svg id='alt" + i + "-x-icon' hidden xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='red' class='bi bi-x' viewBox='0 0 16 16'>" +
+                        "<path d='M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z'/>" +
+                    "</svg>" +
+                "</div>" +
                 "<div class='card-footer p-4 pt-0 border-top-0 bg-transparent'>" +
-                    "<div class='text-center'><a class='btn btn-outline-dark mt-auto' href='https://www.bestbuy.ca/en-ca/product/" + altProduct.sku + "'>More Info</a></div>" + 
+                    "<div class='text-center'><a id='alt" + i + "-btn' class='btn btn-outline-dark mt-auto' href='#'>Select</a></div>" + 
                 "</div>" +
             "</div>" +
         "</div>"
     }
     $("#alt-products").html(altProductCards)
 
-    for (var p in products) {
-        let data = JSON.parse(products[p])
-        console.log(data)
-    }
+    for (var i = 1; i < products.length; i++) {
+        var altProduct = JSON.parse(products[i])
 
+        var price = altProduct.regularPrice
+        var salePrice = ""
+        if (altProduct.salePrice != altProduct.regularPrice) {
+            price = "<del>" + altProduct.regularPrice + "</del>"
+            salePrice = "$" + altProduct.salePrice
+        }
+
+        $("#alt" + i + "-img").attr("src", altProduct.additionalMedia[0].url)
+        $("#alt" + i + "-name").html(altProduct.name)
+        $("#alt" + i + "-price").html("$" + price)
+        $("#alt" + i + "-sale-price").html(salePrice)
+        $("#alt" + i + "-btn").attr("href", "?sku=" + altProduct.sku)
+
+        if (getAvailabilityFor(altProduct.sku) > 0) {
+            $("#alt" + i + "-check-icon").removeAttr("hidden")
+        } else {
+            $("#alt" + i + "-x-icon").removeAttr("hidden")
+        }
+
+    }
 })
+
+function sortByCost() {
+    products.sort(function(a, b){
+        let productA = JSON.parse(a)
+        let productB = JSON.parse(b)
+        let priceA = productA.regularPrice != productA.salePrice ? productA.salePrice : productA.regularPrice
+        let priceB = productB.regularPrice != productB.salePrice ? productB.salePrice : productB.regularPrice
+        return priceA - priceB
+    })
+}
+
+function sortByCostWithPriority(sku) {
+    products.sort(function(a, b){
+        let productA = JSON.parse(a)
+        let productB = JSON.parse(b)
+        
+        if (productB.sku == sku) {
+            return 1
+        }
+
+        if (productA.sku == sku) {
+            return -1
+        }
+
+        let priceA = productA.regularPrice != productA.salePrice ? productA.salePrice : productA.regularPrice
+        let priceB = productB.regularPrice != productB.salePrice ? productB.salePrice : productB.regularPrice
+        return priceA - priceB
+    })
+}
+
+function getAvailabilityFor(sku) {
+    let first = JSON.parse(availabilities[0])
+    if (first.availabilities.length == 0) {
+        return 0
+    }
+    if (first.availabilities[0].pickup.locations.length == 0) {
+        return 0
+    }
+    for (var i = 1; i < availabilities.length; i++) {
+        let avail = JSON.parse(availabilities[i])
+        if (avail.availabilities[0].sku == sku) {
+            return avail.availabilities[0].pickup.locations[0].quantityOnHand
+        }
+    }
+    return 0
+}
+
+function getURLParam(sParam) {
+    var sPageURL = window.location.search.substring(1);
+    var sURLVariables = sPageURL.split('?');
+    for (var i = 0; i < sURLVariables.length; i++) {
+        var sParameterName = sURLVariables[i].split('=');
+        if (sParameterName[0] == sParam) {
+            return sParameterName[1];
+        }
+    }
+}

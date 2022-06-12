@@ -7,79 +7,97 @@ echo.
 set kioskDir="%AppData%\bby-kiosk"
 set configDir="%kioskDir:"=%\config"
 set cacheDir="%kioskDir:"=%\cached"
-set skulist="%configDir:"=%\skulist.txt"
-set branch="master"
-set logFile="%kioskDir:"=%\logs\build.txt"
+set skulistsDir="%kioskDir:"=%\skulists"
+set logsDir="%kioskDir:"=%\logs"
+
+set configFile="%configDir:"=%\config.txt"
+set logFile="%logsDir:"=%\build.txt"
 
 echo Checking app structure...
 
+:: Generate basic app directories
 if not exist %configDir% mkdir %configDir%
 if not exist %cacheDir% mkdir %cacheDir%
-if not exist "%kioskDir:"=%\logs" mkdir "%kioskDir:"=%\logs"
+if not exist %logsDir% mkdir %logsDir%
 
 echo Loading app configuration...
 
-:: Load either a new configuration or an existing one, if any
-:start
-if exist %configDir% (
-    if not exist "%kioskDir:"=%\config\config.txt" goto makeconfig
-    echo Loading config files...
-) else (
-    echo No config found.
-    echo Generating config files...
-    mkdir "%kioskDir:"=%\config"
-    goto makeconfig
+:: Create config file if one doesn't exist
+if not exist %configFile% (
+    echo No existing configuration was found
+    echo Generating default configuration...
+    call :makeconfig
 )
 
-:: If skulist does not exist, create a new one using path from config.txt
+:: Set config variables
+for /F "usebackq tokens=1,2 delims==" %%A in (%configFile%) do (
+    if not "%%B"=="" (
+        if "%%A"=="brand" (
+            call :setbrand %%B
+        ) else if "%%A"=="store" (
+            call :setstore %%B
+        )
+    )
+)
+
+:: Validate that config variables were set
+:: Set to defaults if necessary
+:: Output defaults to config file for redundancy
+if "%brand%" == "" (
+    echo brand=Custom >> %configFile%
+    set brand=Custom
+)
+if "%store%" == "" (
+    echo store=000 >> %configFile%
+    set store=000
+)
+
+:: If brand name is set to custom, let user set SKUs manually
+if %brand%==Custom (
+    call ".\skulist.bat"
+)
+
+echo Loading skulist...
+set skulist="%skulistsDir:"=%\%brand%.txt"
+
+:: If skulist does not exist then end the build script
 if not exist %skulist% (
-    echo Generating new skulist.txt file...
-    call "%kioskDir:"=%\scripts\skulist.bat" %skulist%
+    echo skulist not found
+    set timestamp="[%time%]"
+    echo %timestamp:"=% ERROR: Could not find skulist: %skulist% >> %logFile%
+    goto :eof
 )
 
 :: Generate cached product information from skulist
-:: If no skulist file is found, log error and exit build phase
-if exist %skulist% (
-    echo Generating cached information for products...
-    call "%kioskDir:"=%\scripts\products.bat" %skulist% %cacheDir%
-) else (
-    for /F "tokens=2" %%B in ('date /t') do (
-        set mydate=%%B
-    )
-    set timestamp="[%mydate%%time%]"
-    echo %timestamp:"=% Build failed. Could not cache product information. Unable to load skufile >> %logFile%
-    pause
-    exit
-)
+echo Generating cached product information...
+call "products.bat" %skulist%
+
+echo Generating cached availability information...
+call "availability.bat" %skulist% %store%
 
 :: Make JS files from cached product information
-:: If no skulist file is found, log error and exit build phase
-if exist %skulist% (
-    echo Generating JS dependencies...
-    call "%kioskDir:"=%\scripts\makejs.bat" %cacheDir%
-) else (
-    for /F "tokens=2" %%B in ('date /t') do (
-        set mydate=%%B
-    )
-    set timestamp="[%mydate%%time%]"
-    echo %timestamp:"=% Build failed. Could not make JS dependencies. Unable to load skufile >> %logFile%
-    pause
-    exit
-)
+echo Generating JS dependencies...
+call "makejs.bat" %skulist%
 
-goto end
+goto :eof
 
-:: Generate a new config file in the config directory
+:: Function declarations below
+
+:: Generate a new config file using defaults
 :makeconfig
 echo Generating new config.txt file...
 (
-    echo *Change which GitHub branch to pull from
-    echo branch=%branch%
-    echo *Change the filepath for the skulist.txt file
-    echo skulist=%skulist%
-    echo *Change the location of the cached product information
-    echo cache=%cacheDir%
-) > "%configDir:"=%\config.txt"
-goto start
+    echo brand=Custom
+    echo store=000
+) > %configFile%
+goto :eof
 
-:end
+:: Set the brand name variable
+:setbrand
+set brand=%1
+goto :eof
+
+:: Set the store number variable
+:setstore
+set store=%1
+goto :eof

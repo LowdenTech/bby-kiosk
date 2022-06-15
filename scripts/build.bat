@@ -70,14 +70,14 @@ if not exist %skulist% (
 
 :: Generate cached product information from skulist
 echo Generating cached product information...
-call "%kioskDir:"%\scripts\products.bat" %skulist%
+call "%kioskDir:"=%\scripts\products.bat" %skulist%
 
 echo Generating cached availability information...
-call "%kioskDir:"%\scripts\availability.bat" %skulist% %store%
+call "%kioskDir:"=%\scripts\availability.bat" %skulist% %store%
 
 :: Make JS files from cached product information
 echo Generating JS dependencies...
-call "%kioskDir:"%\scripts\makejs.bat" %skulist%
+call "%kioskDir:"=%\scripts\makejs.bat" %skulist%
 
 goto :eof
 

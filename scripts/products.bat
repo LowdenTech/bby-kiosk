@@ -6,9 +6,9 @@ echo.
 
 set kioskDir="%AppData%\bby-kiosk"
 set cacheDir="%kioskDir:"=%\cached"
-set logsDir="%kioskDir:"%\logs"
+set logsDir="%kioskDir:"=%\logs"
 
-set logFile="%logsDir:"%\products.txt"
+set logFile="%logsDir:"=%\products.txt"
 set skulist=%1
 
 :: Check for invalid parameter entries

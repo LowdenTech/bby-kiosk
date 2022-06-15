@@ -54,7 +54,7 @@ if "%store%" == "" (
 
 :: If brand name is set to custom, let user set SKUs manually
 if %brand%==Custom (
-    call ".\skulist.bat"
+    call "%kioskDir:"=%\scripts\skulist.bat"
 )
 
 echo Loading skulist...
@@ -70,14 +70,14 @@ if not exist %skulist% (
 
 :: Generate cached product information from skulist
 echo Generating cached product information...
-call "products.bat" %skulist%
+call "%kioskDir:"%\scripts\products.bat" %skulist%
 
 echo Generating cached availability information...
-call "availability.bat" %skulist% %store%
+call "%kioskDir:"%\scripts\availability.bat" %skulist% %store%
 
 :: Make JS files from cached product information
 echo Generating JS dependencies...
-call "makejs.bat" %skulist%
+call "%kioskDir:"%\scripts\makejs.bat" %skulist%
 
 goto :eof
 

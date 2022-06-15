@@ -8,10 +8,12 @@ set PATH=%PATH%;"%kioskDir%\dependencies\git\bin"
 set configDir="%kioskDir:"=%\config"
 set configFile="%configDir:"=%\config.txt"
 
+:: Change Directory
+cd %kioskDir%
+
 :: Clean git project folder
 git reset
 git checkout .
-git clean -fdx
 
 :: Get config settings
 for /F "usebackq tokens=1,2 delims==" %%A in (%configFile%) do (
@@ -26,13 +28,13 @@ for /F "usebackq tokens=1,2 delims==" %%A in (%configFile%) do (
 git pull
 
 :: Rebuild app using existing config
-call "%kioskDir%\scripts\build.bat"
+call "%kioskDir:"=%\scripts\build.bat"
 
 :: Close any instances of edge
-taskkill/im msedge.exe
+taskkill/im msedge.exe /F
 
 :: Open Edge in kiosk mode pointing to kiosk.hmtl file
-start msedge "%AppData%\bby-kiosk\kiosk.html" --start-maximized
+start msedge "%kioskDir:"=%\kiosk.html" --start-maximized
 
 goto :eof
 

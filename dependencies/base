@@ -1,6 +1,15 @@
 // Copyright Michael Lowden (LowdenTech) May 2022
 // Created on May 20, 2022
 
+$(document).on("scroll", (e) => {
+    let isAtTop = this.scrollY <= 0
+    if (isAtTop) {
+        $('#arrow').css("opacity", 1)
+    } else {
+        $('#arrow').css("opacity", 0)
+    }
+})
+
 $(document).ready(function() {
 
     let sku = getURLParam('sku')

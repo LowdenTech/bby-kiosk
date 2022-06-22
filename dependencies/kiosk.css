@@ -1,0 +1,7 @@
+#arrow {
+    position: fixed;
+    bottom: 0;
+    left: calc(50% - 64px);
+    transition: all 0.5s;
+    opacity: 1;
+}
